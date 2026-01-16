@@ -1,11 +1,92 @@
+import { useState } from 'react'
+import { useSelector, useDispatch } from 'react-redux'
+import { updateUsername } from '../store/authSlice'
 import Account from '../components/Account'
 
 function Profile() {
+  const { user } = useSelector((state) => state.auth)
+  const dispatch = useDispatch()
+  const [isEditing, setIsEditing] = useState(false)
+  const [newUsername, setNewUsername] = useState('')
+
+  if (!user) {
+    return <div>Loading...</div>
+  }
+
+  const handleEditClick = () => {
+    setNewUsername(user.userName)
+    setIsEditing(true)
+  }
+
+  const handleSave = async (e) => {
+    e.preventDefault()
+    try {
+      await dispatch(updateUsername(newUsername)).unwrap()
+      setIsEditing(false)
+    } catch (error) {
+      console.error('Failed to update username:', error)
+    }
+  }
+
+  const handleCancel = () => {
+    setIsEditing(false)
+    setNewUsername('')
+  }
+
   return (
     <main className="main bg-dark">
       <div className="header">
-        <h1>Welcome back<br />Tony Jarvis!</h1>
-        <button className="edit-button">Edit Name</button>
+        {isEditing ? (
+          <div>
+            <h1>Edit user info</h1>
+            <form onSubmit={handleSave}>
+              <div className="input-wrapper">
+                <label htmlFor="username">User name:</label>
+                <input
+                  type="text"
+                  id="username"
+                  value={newUsername}
+                  onChange={(e) => setNewUsername(e.target.value)}
+                  required
+                />
+              </div>
+              <div className="input-wrapper">
+                <label htmlFor="firstName">First name:</label>
+                <input
+                  type="text"
+                  id="firstName"
+                  value={user.firstName}
+                  disabled
+                />
+              </div>
+              <div className="input-wrapper">
+                <label htmlFor="lastName">Last name:</label>
+                <input
+                  type="text"
+                  id="lastName"
+                  value={user.lastName}
+                  disabled
+                />
+              </div>
+              <div>
+                <button type="submit" className="edit-button">Save</button>
+                <button type="button" className="edit-button" onClick={handleCancel}>
+                  Cancel
+                </button>
+              </div>
+            </form>
+          </div>
+        ) : (
+          <>
+            <h1>
+              Welcome back<br />
+              {user.firstName} {user.lastName}!
+            </h1>
+            <button className="edit-button" onClick={handleEditClick}>
+              Edit Name
+            </button>
+          </>
+        )}
       </div>
       <h2 className="sr-only">Accounts</h2>
       
