@@ -9,7 +9,6 @@ const initialState = {
   error: null,
 }
 
-// Thunk pour le login
 export const login = createAsyncThunk(
   'auth/login',
   async ({ email, password }, { rejectWithValue }) => {
@@ -23,7 +22,6 @@ export const login = createAsyncThunk(
   }
 )
 
-// Thunk pour récupérer le profil
 export const getUserProfile = createAsyncThunk(
   'auth/getUserProfile',
   async (_, { getState, rejectWithValue }) => {
@@ -37,7 +35,7 @@ export const getUserProfile = createAsyncThunk(
   }
 )
 
-// Thunk pour mettre à jour le username
+
 export const updateUsername = createAsyncThunk(
   'auth/updateUsername',
   async (userName, { getState, rejectWithValue }) => {
@@ -56,7 +54,6 @@ const authSlice = createSlice({
   initialState,
   reducers: authReducers,
   extraReducers: (builder) => {
-    // Login
     builder
       .addCase(login.pending, (state) => {
         state.isLoading = true
@@ -71,7 +68,6 @@ const authSlice = createSlice({
         state.error = action.payload
       })
 
-    // Get User Profile
     builder
       .addCase(getUserProfile.pending, (state) => {
         state.isLoading = true
@@ -84,8 +80,7 @@ const authSlice = createSlice({
         state.isLoading = false
         state.error = action.payload
       })
-
-    // Update Username
+      
     builder
       .addCase(updateUsername.fulfilled, (state, action) => {
         state.user = action.payload
