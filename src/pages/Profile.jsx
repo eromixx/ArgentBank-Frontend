@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useSelector, useDispatch } from 'react-redux'
 import { updateUsername } from '../store/authSlice'
 import Account from '../components/Account'
+import Input from '../components/Input'
 
 function Profile() {
   const { user } = useSelector((state) => state.auth)
@@ -40,34 +41,25 @@ function Profile() {
           <div>
             <h1>Edit user info</h1>
             <form onSubmit={handleSave}>
-              <div className="input-wrapper">
-                <label htmlFor="username">User name:</label>
-                <input
-                  type="text"
-                  id="username"
-                  value={newUsername}
-                  onChange={(e) => setNewUsername(e.target.value)}
-                  required
-                />
-              </div>
-              <div className="input-wrapper">
-                <label htmlFor="firstName">First name:</label>
-                <input
-                  type="text"
-                  id="firstName"
-                  value={user.firstName}
-                  disabled
-                />
-              </div>
-              <div className="input-wrapper">
-                <label htmlFor="lastName">Last name:</label>
-                <input
-                  type="text"
-                  id="lastName"
-                  value={user.lastName}
-                  disabled
-                />
-              </div>
+              <Input
+                label="User name:"
+                id="username"
+                value={newUsername}
+                onChange={(e) => setNewUsername(e.target.value)}
+                required
+              />
+              <Input
+                label="First name:"
+                id="firstName"
+                value={user.firstName}
+                disabled
+              />
+              <Input
+                label="Last name:"
+                id="lastName"
+                value={user.lastName}
+                disabled
+              />
               <div>
                 <button type="submit" className="edit-button">Save</button>
                 <button type="button" className="edit-button" onClick={handleCancel}>

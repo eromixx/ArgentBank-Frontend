@@ -1,5 +1,6 @@
 import { createSlice, createAsyncThunk } from '@reduxjs/toolkit'
 import { loginAPI, getUserProfileAPI, updateUsernameAPI } from '../services/api'
+import { authReducers } from './reducers'
 
 const initialState = {
   token: localStorage.getItem('token') || null,
@@ -8,7 +9,7 @@ const initialState = {
   error: null,
 }
 
-// Thunk login
+// Thunk pour le login
 export const login = createAsyncThunk(
   'auth/login',
   async ({ email, password }, { rejectWithValue }) => {
@@ -22,7 +23,7 @@ export const login = createAsyncThunk(
   }
 )
 
-// Thunk profil
+// Thunk pour récupérer le profil
 export const getUserProfile = createAsyncThunk(
   'auth/getUserProfile',
   async (_, { getState, rejectWithValue }) => {
@@ -36,7 +37,7 @@ export const getUserProfile = createAsyncThunk(
   }
 )
 
-// Thunk MAJ username
+// Thunk pour mettre à jour le username
 export const updateUsername = createAsyncThunk(
   'auth/updateUsername',
   async (userName, { getState, rejectWithValue }) => {
@@ -53,18 +54,9 @@ export const updateUsername = createAsyncThunk(
 const authSlice = createSlice({
   name: 'auth',
   initialState,
-  reducers: {
-    logout: (state) => {
-      state.token = null
-      state.user = null
-      state.error = null
-      localStorage.removeItem('token')
-    },
-    clearError: (state) => {
-      state.error = null
-    },
-  },
+  reducers: authReducers,
   extraReducers: (builder) => {
+    // Login
     builder
       .addCase(login.pending, (state) => {
         state.isLoading = true
@@ -79,6 +71,7 @@ const authSlice = createSlice({
         state.error = action.payload
       })
 
+    // Get User Profile
     builder
       .addCase(getUserProfile.pending, (state) => {
         state.isLoading = true
@@ -92,6 +85,7 @@ const authSlice = createSlice({
         state.error = action.payload
       })
 
+    // Update Username
     builder
       .addCase(updateUsername.fulfilled, (state, action) => {
         state.user = action.payload

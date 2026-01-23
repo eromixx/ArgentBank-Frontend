@@ -276,6 +276,24 @@ body {
   color: #fff;
 }
 
+button,
+a,
+.edit-button,
+.sign-in-button,
+.transaction-button,
+.main-nav-item,
+input[type="checkbox"] {
+  cursor: pointer;
+}
+
+button:hover,
+.edit-button:hover,
+.sign-in-button:hover,
+.transaction-button:hover {
+  opacity: 0.9;
+  transition: opacity 0.2s ease;
+}
+
 @media (min-width: 720px) {
   .account {
     flex-direction: row;

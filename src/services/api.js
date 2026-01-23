@@ -1,6 +1,5 @@
 const API_URL = 'http://localhost:3001/api/v1'
 
-// Login 
 export const loginAPI = async (email, password) => {
   const response = await fetch(`${API_URL}/user/login`, {
     method: 'POST',
@@ -19,7 +18,6 @@ export const loginAPI = async (email, password) => {
   return data.body.token
 }
 
-//récupèrez les infos utilisateur avec le token
 export const getUserProfileAPI = async (token) => {
   const response = await fetch(`${API_URL}/user/profile`, {
     method: 'GET',
@@ -37,7 +35,6 @@ export const getUserProfileAPI = async (token) => {
   return data.body
 }
 
-//modifiez le username
 export const updateUsernameAPI = async (token, userName) => {
   const response = await fetch(`${API_URL}/user/profile`, {
     method: 'PUT',
